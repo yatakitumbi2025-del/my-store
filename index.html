@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Store</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F5F6F8;
+    --card:#FFFFFF;
+    --border:#E2E5EA;
+    --text:#1F2430;
+    --muted:#6B7280;
+    --primary:#2563EB;
+    --green:#16A34A;
+    --red:#DC2626;
+    --amber:#D97706;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+  }
+  header{
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    padding:16px 20px;
+  }
+  header h1{
+    font-size:1.15rem;
+    margin:0;
+  }
+  header p{
+    margin:2px 0 0;
+    color:var(--muted);
+    font-size:0.85rem;
+  }
+  .wrap{
+    max-width:960px;
+    margin:0 auto;
+    padding:16px;
+  }
+
+  /* stat row */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px;
+  }
+  .stat .label{
+    font-size:0.75rem;
+    color:var(--muted);
+    margin-bottom:4px;
+  }
+  .stat .value{
+    font-size:1.4rem;
+    font-weight:700;
+  }
+  .stat .value.green{ color:var(--green); }
+  .stat .value.red{ color:var(--red); }
+  .stat .value.amber{ color:var(--amber); }
+
+  .grid{
+    display:grid;
+    gap:16px;
+  }
+  @media(min-width:760px){
+    .grid{ grid-template-columns:1.1fr 1fr; }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:16px;
+  }
+  .card h2{
+    font-size:0.95rem;
+    margin:0 0 12px;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.85rem;
+  }
+  th,td{
+    text-align:left;
+    padding:8px 6px;
+    border-bottom:1px solid var(--border);
+  }
+  th{
+    color:var(--muted);
+    font-weight:600;
+    font-size:0.75rem;
+    text-transform:uppercase;
+  }
+  .badge{
+    font-size:0.7rem;
+    padding:2px 8px;
+    border-radius:999px;
+    font-weight:600;
+  }
+  .badge-ok{ background:#DCFCE7; color:var(--green); }
+  .badge-low{ background:#FEF3C7; color:var(--amber); }
+  .badge-out{ background:#FEE2E2; color:var(--red); }
+
+  form{
+    display:grid;
+    gap:8px;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+  }
+  .row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  input,select{
+    padding:8px 10px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    font-size:0.85rem;
+    width:100%;
+    font-family:inherit;
+  }
+  button{
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    padding:9px;
+    border-radius:6px;
+    font-weight:600;
+    font-size:0.85rem;
+    cursor:pointer;
+  }
+  button:hover{ opacity:0.9; }
+  .empty{
+    color:var(--muted);
+    font-size:0.85rem;
+    padding:12px 0;
+    text-align:center;
+  }
+  canvas{ max-height:220px; }
+
+  .cal-nav{ display:flex; gap:8px; align-items:center; margin:2px 0 10px; }
+  .cal-nav button{ width:32px; padding:6px; }
+  .cal-nav span{ font-size:0.85rem; font-weight:600; color:var(--muted); }
+  .calendar{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:4px;
+  }
+  .cal-dow{
+    text-align:center;
+    font-size:0.7rem;
+    color:var(--muted);
+    font-weight:600;
+    padding:4px 0;
+  }
+  .cal-day{
+    aspect-ratio:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:6px;
+    border:1px solid var(--border);
+    font-size:0.8rem;
+    cursor:pointer;
+    background:var(--card);
+  }
+  .cal-day:hover{ background:#EFF4FF; }
+  .cal-day.empty-cell{ visibility:hidden; cursor:default; }
+  .cal-day.today{ border-color:var(--primary); font-weight:700; }
+  .cal-day.selected{ background:var(--primary); color:#fff; }
+  .cal-dots{ display:flex; gap:2px; margin-top:2px; height:5px; }
+  .cal-dot{ width:5px; height:5px; border-radius:50%; }
+  .dot-sales{ background:var(--green); }
+  .dot-inv{ background:var(--amber); }
+  .day-detail{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+  }
+  .day-detail h3{ font-size:0.9rem; margin:0 0 10px; }
+  .day-detail h4{ font-size:0.78rem; margin:0 0 6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>My Store</h1>
+  <p id="todayDate"></p>
+</header>
+
+<div class="wrap">
+
+  <div class="stats">
+    <div class="stat">
+      <div class="label">Today's Sales</div>
+      <div class="value green" id="statSales">₱0.00</div>
+    </div>
+    <div class="stat">
+      <div class="label">Transactions</div>
+      <div class="value" id="statTx">0</div>
+    </div>
+    <div class="stat">
+      <div class="label">Total Items</div>
+      <div class="value" id="statItems">0</div>
+    </div>
+    <div class="stat">
+      <div class="label">Low / Out of Stock</div>
+      <div class="value amber" id="statLow">0</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>Sales (last 7 days)</h2>
+      <canvas id="salesChart"></canvas>
+      <form onsubmit="event.preventDefault(); addSale();">
+        <div class="row">
+          <input type="text" id="saleItem" placeholder="Item name">
+          <input type="number" id="saleAmount" placeholder="Amount" min="0" step="0.01">
+        </div>
+        <button type="submit">Add Sale</button>
+      </form>
+
+      <h2 style="margin-top:18px;">Sales History</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Amount</th><th>Date</th></tr></thead>
+        <tbody id="salesHistoryBody"></tbody>
+      </table>
+      <div id="salesHistoryEmpty" class="empty" style="display:none">No sales yet.</div>
+    </div>
+
+    <div class="card">
+      <h2>Inventory</h2>
+      <input type="text" id="inventorySearch" placeholder="Search items..." style="margin-bottom:10px;">
+      <table>
+        <thead>
+          <tr><th>Item</th><th>Qty</th><th>Status</th></tr>
+        </thead>
+        <tbody id="inventoryBody"></tbody>
+      </table>
+      <div id="inventoryEmpty" class="empty" style="display:none">No items yet.</div>
+      <form onsubmit="event.preventDefault(); addItem();">
+        <div class="row">
+          <input type="text" id="itemName" placeholder="Item name">
+          <input type="number" id="itemQty" placeholder="Quantity" min="0">
+        </div>
+        <input type="number" id="itemThreshold" placeholder="Low stock threshold (default 5)" min="0">
+        <button type="submit">Add / Update Item</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:16px;">
+    <h2>Data</h2>
+    <div class="cal-nav">
+      <button type="button" onclick="changeMonth(-1)">‹</button>
+      <span id="calMonthLabel"></span>
+      <button type="button" onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="calendar" id="calendarGrid"></div>
+
+    <div class="day-detail" id="dayDetail" style="display:none;">
+      <h3 id="dayDetailTitle"></h3>
+      <h4>Sales</h4>
+      <table>
+        <thead><tr><th>Item</th><th>Amount</th></tr></thead>
+        <tbody id="dayDetailSales"></tbody>
+      </table>
+      <div id="dayDetailSalesEmpty" class="empty" style="display:none">No sales recorded.</div>
+
+      <h4 style="margin-top:12px;">Inventory Changes</h4>
+      <table>
+        <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+        <tbody id="dayDetailInventory"></tbody>
+      </table>
+      <div id="dayDetailInventoryEmpty" class="empty" style="display:none">No inventory changes.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SALES_KEY = 'inv_sales';
+const STOCK_KEY = 'inv_stock';
+const INV_HISTORY_KEY = 'inv_history';
+
+function load(key){ try{ return JSON.parse(localStorage.getItem(key)) || []; }catch(e){ return []; } }
+function save(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
+
+// seed demo data on first run
+if(!localStorage.getItem(STOCK_KEY)){
+  save(STOCK_KEY, [
+    {name:'Canned Goods', qty:24, threshold:5},
+    {name:'Bar Soap', qty:3, threshold:5},
+    {name:'Instant Noodles', qty:0, threshold:5},
+    {name:'Soft Drinks 1L', qty:12, threshold:4},
+  ]);
+}
+if(!localStorage.getItem(INV_HISTORY_KEY)){
+  const today = new Date().toISOString();
+  save(INV_HISTORY_KEY, [
+    {name:'Canned Goods', qty:24, date:today},
+    {name:'Bar Soap', qty:3, date:today},
+    {name:'Instant Noodles', qty:0, date:today},
+    {name:'Soft Drinks 1L', qty:12, date:today},
+  ]);
+}
+if(!localStorage.getItem(SALES_KEY)){
+  const today = new Date();
+  const demo = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    demo.push({item:'Assorted', amount: Math.round(150+Math.random()*400), date:d.toISOString()});
+  }
+  save(SALES_KEY, demo);
+}
+
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+let salesChart;
+function renderSales(){
+  const sales = load(SALES_KEY);
+  const today = new Date().toDateString();
+  const todaySales = sales.filter(s => new Date(s.date).toDateString() === today);
+  document.getElementById('statSales').textContent = '₱' + todaySales.reduce((a,s)=>a+Number(s.amount),0).toFixed(2);
+  document.getElementById('statTx').textContent = todaySales.length;
+
+  const days = [], totals = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    days.push(d.toLocaleDateString('en-US',{weekday:'short'}));
+    totals.push(sales.filter(s=>new Date(s.date).toDateString()===d.toDateString())
+                      .reduce((a,s)=>a+Number(s.amount),0));
+  }
+
+  const ctx = document.getElementById('salesChart').getContext('2d');
+  if(salesChart) salesChart.destroy();
+  salesChart = new Chart(ctx, {
+    type:'bar',
+    data:{ labels:days, datasets:[{ data:totals, backgroundColor:'#2563EB', borderRadius:4 }] },
+    options:{ plugins:{legend:{display:false}}, scales:{ y:{ ticks:{ callback:v=>'₱'+v } } } }
+  });
+
+  renderSalesHistory(sales);
+}
+
+function renderSalesHistory(sales){
+  const body = document.getElementById('salesHistoryBody');
+  const emptyMsg = document.getElementById('salesHistoryEmpty');
+  if(sales.length === 0){
+    body.innerHTML = '';
+    emptyMsg.style.display = 'block';
+    return;
+  }
+  emptyMsg.style.display = 'none';
+  const sorted = [...sales].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 20);
+  body.innerHTML = sorted.map(s => {
+    const d = new Date(s.date).toLocaleDateString('en-US',{month:'short', day:'numeric'});
+    return `<tr><td>${s.item}</td><td>₱${Number(s.amount).toFixed(2)}</td><td>${d}</td></tr>`;
+  }).join('');
+}
+
+function addSale(){
+  const item = document.getElementById('saleItem').value.trim() || 'Item';
+  const amount = parseFloat(document.getElementById('saleAmount').value);
+  if(!amount || amount <= 0) return;
+  const sales = load(SALES_KEY);
+  sales.push({item, amount, date:new Date().toISOString()});
+  save(SALES_KEY, sales);
+  document.getElementById('saleItem').value = '';
+  document.getElementById('saleAmount').value = '';
+  renderSales();
+  renderCalendar();
+}
+
+function renderStock(){
+  const stock = load(STOCK_KEY);
+  const body = document.getElementById('inventoryBody');
+  const emptyMsg = document.getElementById('inventoryEmpty');
+  const query = (document.getElementById('inventorySearch').value || '').trim().toLowerCase();
+  const filtered = query ? stock.filter(i => i.name.toLowerCase().includes(query)) : stock;
+
+  if(filtered.length === 0){
+    body.innerHTML = '';
+    emptyMsg.textContent = query ? 'No items match your search.' : 'No items yet.';
+    emptyMsg.style.display = 'block';
+  } else {
+    emptyMsg.style.display = 'none';
+    body.innerHTML = filtered.map(item=>{
+      const threshold = item.threshold ?? 5;
+      const state = item.qty <= 0 ? 'out' : (item.qty <= threshold ? 'low' : 'ok');
+      const badge = state === 'out'
+        ? '<span class="badge badge-out">Out of stock</span>'
+        : state === 'low'
+        ? '<span class="badge badge-low">Low</span>'
+        : '<span class="badge badge-ok">In stock</span>';
+      return `<tr><td>${item.name}</td><td>${item.qty}</td><td>${badge}</td></tr>`;
+    }).join('');
+  }
+
+  document.getElementById('statItems').textContent = stock.length;
+  document.getElementById('statLow').textContent = stock.filter(i => i.qty <= (i.threshold ?? 5)).length;
+}
+
+document.getElementById('inventorySearch').addEventListener('input', renderStock);
+
+function addItem(){
+  const name = document.getElementById('itemName').value.trim();
+  const qty = parseInt(document.getElementById('itemQty').value);
+  const thresholdVal = document.getElementById('itemThreshold').value;
+  if(!name || isNaN(qty)) return;
+  const threshold = thresholdVal ? parseInt(thresholdVal) : 5;
+  const stock = load(STOCK_KEY);
+  const existing = stock.find(i => i.name.toLowerCase() === name.toLowerCase());
+  if(existing){ existing.qty = qty; existing.threshold = threshold; }
+  else { stock.push({name, qty, threshold}); }
+  save(STOCK_KEY, stock);
+
+  const invHistory = load(INV_HISTORY_KEY);
+  invHistory.push({name, qty, date:new Date().toISOString()});
+  save(INV_HISTORY_KEY, invHistory);
+
+  document.getElementById('itemName').value = '';
+  document.getElementById('itemQty').value = '';
+  document.getElementById('itemThreshold').value = '';
+  renderStock();
+  renderCalendar();
+}
+
+renderSales();
+renderStock();
+
+/* ---------- Data page: monthly calendar ---------- */
+let calMonth = new Date().getMonth();
+let calYear = new Date().getFullYear();
+let selectedDate = null;
+
+function changeMonth(delta){
+  calMonth += delta;
+  if(calMonth < 0){ calMonth = 11; calYear--; }
+  if(calMonth > 11){ calMonth = 0; calYear++; }
+  selectedDate = null;
+  document.getElementById('dayDetail').style.display = 'none';
+  renderCalendar();
+}
+
+function renderCalendar(){
+  const sales = load(SALES_KEY);
+  const invHistory = load(INV_HISTORY_KEY);
+  const grid = document.getElementById('calendarGrid');
+  document.getElementById('calMonthLabel').textContent =
+    new Date(calYear, calMonth).toLocaleDateString('en-US', { month:'long', year:'numeric' });
+
+  const dow = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  let html = dow.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const todayStr = new Date().toDateString();
+
+  for(let i = 0; i < firstDay; i++){ html += `<div class="cal-day empty-cell"></div>`; }
+
+  for(let day = 1; day <= daysInMonth; day++){
+    const d = new Date(calYear, calMonth, day);
+    const dStr = d.toDateString();
+    const hasSales = sales.some(s => new Date(s.date).toDateString() === dStr);
+    const hasInv = invHistory.some(h => new Date(h.date).toDateString() === dStr);
+
+    let cls = 'cal-day';
+    if(dStr === todayStr) cls += ' today';
+    if(selectedDate === dStr) cls += ' selected';
+
+    let dots = '';
+    if(hasSales) dots += '<span class="cal-dot dot-sales"></span>';
+    if(hasInv) dots += '<span class="cal-dot dot-inv"></span>';
+
+    html += `<div class="${cls}" onclick="selectDay('${dStr}')">
+      <span>${day}</span>
+      <div class="cal-dots">${dots}</div>
+    </div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function selectDay(dStr){
+  selectedDate = dStr;
+  renderCalendar();
+
+  const sales = load(SALES_KEY).filter(s => new Date(s.date).toDateString() === dStr);
+  const invHistory = load(INV_HISTORY_KEY).filter(h => new Date(h.date).toDateString() === dStr);
+
+  document.getElementById('dayDetail').style.display = 'block';
+  document.getElementById('dayDetailTitle').textContent =
+    new Date(dStr).toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+
+  const salesBody = document.getElementById('dayDetailSales');
+  const salesEmpty = document.getElementById('dayDetailSalesEmpty');
+  if(sales.length === 0){
+    salesBody.innerHTML = '';
+    salesEmpty.style.display = 'block';
+  } else {
+    salesEmpty.style.display = 'none';
+    salesBody.innerHTML = sales.map(s => `<tr><td>${s.item}</td><td>₱${Number(s.amount).toFixed(2)}</td></tr>`).join('');
+  }
+
+  const invBody = document.getElementById('dayDetailInventory');
+  const invEmpty = document.getElementById('dayDetailInventoryEmpty');
+  if(invHistory.length === 0){
+    invBody.innerHTML = '';
+    invEmpty.style.display = 'block';
+  } else {
+    invEmpty.style.display = 'none';
+    invBody.innerHTML = invHistory.map(h => `<tr><td>${h.name}</td><td>${h.qty}</td></tr>`).join('');
+  }
+}
+
+renderCalendar();
+</script>
+</body>
+</html>
