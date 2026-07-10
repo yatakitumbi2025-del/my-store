@@ -13,6 +13,7 @@
     --text:#1F2430;
     --muted:#6B7280;
     --primary:#2563EB;
+    --primary-dark:#1D4ED8;
     --green:#16A34A;
     --red:#DC2626;
     --amber:#D97706;
@@ -28,6 +29,7 @@
     display:flex;
     min-height:100vh;
   }
+  :focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
 
   /* ===== SIDEBAR ===== */
   .sidebar{
@@ -36,74 +38,50 @@
     color:var(--sidebar-text);
     flex-shrink:0;
     padding:18px 0;
+    display:flex;
+    flex-direction:column;
     position:sticky;
     top:0;
     height:100vh;
   }
-  .sidebar h1{
-    font-size:1.05rem;
-    color:#fff;
-    margin:0 0 18px;
-    padding:0 20px;
-  }
+  .sidebar h1{ font-size:1.05rem; color:#fff; margin:0 0 18px; padding:0 20px; }
   .nav-item{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:11px 20px;
-    cursor:pointer;
-    font-size:0.88rem;
-    font-weight:500;
-    border-left:3px solid transparent;
+    display:flex; align-items:center; gap:10px;
+    padding:11px 20px; cursor:pointer; font-size:0.88rem; font-weight:500;
+    border-left:3px solid transparent; background:none; border-top:none; border-right:none; border-bottom:none;
+    color:var(--sidebar-text); width:100%; text-align:left;
   }
   .nav-item:hover{ background:rgba(255,255,255,0.05); }
-  .nav-item.active{
-    background:rgba(37,99,235,0.15);
-    border-left:3px solid var(--primary);
-    color:#fff;
-  }
+  .nav-item.active{ background:rgba(37,99,235,0.15); border-left:3px solid var(--primary); color:#fff; }
 
   /* ===== MAIN ===== */
   .main{ flex:1; min-width:0; }
-  .topbar{
-    background:var(--card);
-    border-bottom:1px solid var(--border);
-    padding:16px 22px;
-  }
+  .topbar{ background:var(--card); border-bottom:1px solid var(--border); padding:16px 22px; }
   .topbar h2{ margin:0; font-size:1.1rem; }
   .topbar p{ margin:2px 0 0; color:var(--muted); font-size:0.85rem; }
   .content{ padding:18px 20px 40px; max-width:900px; }
   .page{ display:none; }
   .page.active{ display:block; }
 
-  /* stat row */
-  .stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:12px;
-    margin-bottom:16px;
-  }
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:16px; }
   .stat{ background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px; }
   .stat .label{ font-size:0.75rem; color:var(--muted); margin-bottom:4px; }
   .stat .value{ font-size:1.4rem; font-weight:700; }
   .stat .value.green{ color:var(--green); }
-  .stat .value.red{ color:var(--red); }
   .stat .value.amber{ color:var(--amber); }
 
-  .card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:16px;
-    margin-bottom:16px;
-  }
+  .card{ background:var(--card); border:1px solid var(--border); border-radius:8px; padding:16px; margin-bottom:16px; }
   .card h3{ font-size:0.95rem; margin:0 0 12px; }
+  .card-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .card-head h3{ margin:0; }
 
   table{ width:100%; border-collapse:collapse; font-size:0.85rem; }
   th,td{ text-align:left; padding:8px 6px; border-bottom:1px solid var(--border); }
   th{ color:var(--muted); font-weight:600; font-size:0.75rem; text-transform:uppercase; }
+  td.num{ text-align:right; }
+  th.num{ text-align:right; }
 
-  .badge{ font-size:0.7rem; padding:2px 8px; border-radius:999px; font-weight:600; }
+  .badge{ font-size:0.7rem; padding:2px 8px; border-radius:999px; font-weight:600; white-space:nowrap; }
   .badge-ok{ background:#DCFCE7; color:var(--green); }
   .badge-low{ background:#FEF3C7; color:var(--amber); }
   .badge-out{ background:#FEE2E2; color:var(--red); }
@@ -111,28 +89,26 @@
   form{ display:grid; gap:8px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
   .row{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
   .row-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+  @media (max-width:520px){ .row-3{ grid-template-columns:1fr; } }
   input,select{
     padding:8px 10px; border:1px solid var(--border); border-radius:6px;
-    font-size:0.85rem; width:100%; font-family:inherit; background:#fff;
+    font-size:0.85rem; width:100%; font-family:inherit; background:#fff; color:var(--text);
   }
-  button{
-    background:var(--primary); color:#fff; border:none; padding:9px;
-    border-radius:6px; font-weight:600; font-size:0.85rem; cursor:pointer;
-  }
-  button:hover{ opacity:0.9; }
-  .empty{ color:var(--muted); font-size:0.85rem; padding:12px 0; text-align:center; }
+  label{ font-size:0.75rem; color:var(--muted); display:block; margin-bottom:2px; }
+  button{ background:var(--primary); color:#fff; border:none; padding:9px 12px; border-radius:6px; font-weight:600; font-size:0.85rem; cursor:pointer; }
+  button:hover{ background:var(--primary-dark); }
+  button.secondary{ background:#fff; color:var(--text); border:1px solid var(--border); }
+  button.secondary:hover{ background:var(--bg); }
+  button.danger{ background:#fff; color:var(--red); border:1px solid #FCA5A5; padding:5px 9px; font-size:0.75rem; }
+  button.danger:hover{ background:#FEF2F2; }
+  button.small{ padding:5px 9px; font-size:0.75rem; }
+  .icon-btn-group{ display:flex; gap:6px; justify-content:flex-end; }
+  .empty{ color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center; }
   canvas{ max-height:220px; }
 
-  .sale-preview{
-    font-size:0.85rem;
-    color:var(--muted);
-    background:#F5F6F8;
-    border-radius:6px;
-    padding:8px 10px;
-  }
+  .sale-preview{ font-size:0.85rem; color:var(--muted); background:var(--bg); border-radius:6px; padding:8px 10px; }
   .sale-preview b{ color:var(--text); }
 
-  /* calendar */
   .cal-nav{ display:flex; gap:8px; align-items:center; margin:2px 0 10px; }
   .cal-nav button{ width:32px; padding:6px; }
   .cal-nav span{ font-size:0.85rem; font-weight:600; color:var(--muted); }
@@ -141,6 +117,7 @@
   .cal-day{
     aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
     border-radius:6px; border:1px solid var(--border); font-size:0.8rem; cursor:pointer; background:var(--card);
+    padding:0;
   }
   .cal-day:hover{ background:#EFF4FF; }
   .cal-day.empty-cell{ visibility:hidden; cursor:default; }
@@ -152,44 +129,50 @@
   .dot-inv{ background:var(--amber); }
   .day-detail{ margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
   .day-detail h3{ font-size:0.9rem; margin:0 0 10px; }
-  .day-detail h4{ font-size:0.78rem; margin:0 0 6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .day-detail h4{ font-size:0.78rem; margin:14px 0 6px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
 
-  .soon{ text-align:center; padding:60px 20px; color:var(--muted); }
-  .soon .icon{ font-size:2.2rem; margin-bottom:10px; }
+  .settings-row{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); gap:12px; flex-wrap:wrap; }
+  .settings-row:last-child{ border-bottom:none; }
+  .settings-row .desc{ font-size:0.8rem; color:var(--muted); max-width:420px; }
+  code{ background:var(--bg); padding:1px 5px; border-radius:4px; font-size:0.8em; }
+  pre{ background:#0F1319; color:#C9D1D9; padding:12px; border-radius:6px; font-size:0.75rem; overflow-x:auto; }
+  .toast{
+    position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+    background:var(--text); color:#fff; padding:10px 18px; border-radius:8px;
+    font-size:0.85rem; z-index:2000; opacity:0; pointer-events:none; transition:opacity 0.2s;
+  }
+  .toast.show{ opacity:1; }
 
   /* ===== AUTH ===== */
-  #authScreen{
-    position:fixed; inset:0; background:var(--bg);
-    display:flex; align-items:center; justify-content:center;
-    z-index:1000;
-  }
+  #authScreen{ position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:1000; }
   #authScreen.hidden{ display:none; }
-  .auth-box{
-    background:var(--card); border:1px solid var(--border); border-radius:12px;
-    padding:40px 36px; text-align:center; width:300px;
-  }
+  .auth-box{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:40px 36px; text-align:center; width:300px; }
   .auth-box h1{ margin:0 0 6px; font-size:1.3rem; }
   .auth-box p{ margin:0 0 22px; color:var(--muted); font-size:0.88rem; }
   .google-btn{
-    display:flex; align-items:center; justify-content:center; gap:10px;
-    width:100%; background:#fff; color:#3c4043; border:1px solid var(--border);
-    padding:10px; border-radius:6px; font-weight:600; font-size:0.88rem; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:10px; width:100%;
+    background:#fff; color:#3c4043; border:1px solid var(--border); padding:10px; border-radius:6px;
+    font-weight:600; font-size:0.88rem; cursor:pointer;
   }
-  .google-btn:hover{ background:#F5F6F8; }
+  .google-btn:hover{ background:var(--bg); }
   .auth-error{ color:var(--red); font-size:0.8rem; margin-top:14px; display:none; }
 
   #appRoot{ display:none; width:100%; }
   #appRoot.visible{ display:flex; }
 
-  .user-chip{
-    margin-top:auto; padding:14px 20px; border-top:1px solid rgba(255,255,255,0.08);
-    display:flex; align-items:center; gap:8px; font-size:0.78rem;
-  }
+  .user-chip{ margin-top:auto; padding:14px 20px; border-top:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; gap:8px; font-size:0.78rem; }
   .user-chip img{ width:26px; height:26px; border-radius:50%; }
   .user-chip .name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .user-chip button{ background:transparent; color:var(--sidebar-text); border:1px solid rgba(255,255,255,0.15); padding:4px 8px; font-size:0.72rem; }
-  .sidebar{ display:flex; flex-direction:column; }
-  .sync-badge{ font-size:0.68rem; color:var(--muted); padding:0 20px 10px; }
+  .sync-badge{ font-size:0.68rem; color:var(--muted); padding:0 20px 10px; min-height:1em; }
+
+  @media (max-width:640px){
+    body{ flex-direction:column; }
+    .sidebar{ width:100%; height:auto; position:static; flex-direction:row; flex-wrap:wrap; padding:10px; gap:2px; }
+    .sidebar h1{ display:none; }
+    .user-chip{ margin-top:0; border-top:none; }
+    .content{ padding:14px; }
+  }
 </style>
 </head>
 <body>
@@ -198,7 +181,7 @@
   <div class="auth-box">
     <h1>My Store</h1>
     <p>Sign in to access your dashboard</p>
-    <button class="google-btn" id="googleSignInBtn">
+    <button class="google-btn" id="googleSignInBtn" type="button">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20.4H24v7.2h11.3C33.7 32 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.8l5.4-5.4C33.4 7.9 28.9 6 24 6 13.5 6 5 14.5 5 25s8.5 19 19 19 19-8.5 19-19c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6 4.4C13.8 15.6 18.5 12.7 24 12.7c2.8 0 5.3 1 7.3 2.8l5.4-5.4C33.4 6.9 28.9 5 24 5 16 5 9.1 9.5 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.2 0 9.9-1.9 13.4-5.1l-6.2-5.2c-2 1.4-4.5 2.3-7.2 2.3-5.3 0-9.7-3-11.4-7.2l-6.2 4.8C9.1 40.5 16 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20.4H24v7.2h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C40.6 35.5 43.9 30.7 43.9 25c0-1.3-.1-2.4-.3-3.5z"/></svg>
       Sign in with Google
     </button>
@@ -207,20 +190,20 @@
 </div>
 
 <div id="appRoot">
-<div class="sidebar">
+<nav class="sidebar" aria-label="Main navigation">
   <h1>My Store</h1>
-  <div class="nav-item active" data-page="dashboard">📊 Dashboard</div>
-  <div class="nav-item" data-page="sales">🧾 Sales</div>
-  <div class="nav-item" data-page="inventory">📦 Inventory</div>
-  <div class="nav-item" data-page="data">🗓️ Data</div>
-  <div class="nav-item" data-page="settings">⚙️ Settings</div>
+  <button class="nav-item active" data-page="dashboard" type="button">📊 Dashboard</button>
+  <button class="nav-item" data-page="sales" type="button">🧾 Sales</button>
+  <button class="nav-item" data-page="inventory" type="button">📦 Inventory</button>
+  <button class="nav-item" data-page="data" type="button">🗓️ Data</button>
+  <button class="nav-item" data-page="settings" type="button">⚙️ Settings</button>
   <div class="sync-badge" id="syncBadge"></div>
   <div class="user-chip">
     <img id="userPhoto" src="" alt="">
     <span class="name" id="userName"></span>
-    <button id="signOutBtn">Sign out</button>
+    <button id="signOutBtn" type="button">Sign out</button>
   </div>
-</div>
+</nav>
 
 <div class="main">
   <div class="topbar">
@@ -240,7 +223,7 @@
       </div>
       <div class="card">
         <h3>Sales — last 7 days</h3>
-        <canvas id="salesChart"></canvas>
+        <canvas id="salesChart" role="img" aria-label="Bar chart of sales for the last 7 days"></canvas>
       </div>
     </div>
 
@@ -248,10 +231,16 @@
     <div class="page" id="page-sales">
       <div class="card">
         <h3>Record a Sale</h3>
-        <form onsubmit="event.preventDefault(); addSale();">
+        <form id="saleForm">
           <div class="row">
-            <select id="saleItemSelect" onchange="updateSalePreview()"></select>
-            <input type="number" id="saleQty" placeholder="Quantity" min="1" oninput="updateSalePreview()">
+            <div>
+              <label for="saleItemSelect">Item</label>
+              <select id="saleItemSelect"></select>
+            </div>
+            <div>
+              <label for="saleQty">Quantity</label>
+              <input type="number" id="saleQty" min="1" step="1" inputmode="numeric">
+            </div>
           </div>
           <div class="sale-preview" id="salePreview">Select an item to see price.</div>
           <button type="submit">Record Sale</button>
@@ -259,33 +248,43 @@
       </div>
 
       <div class="card">
-        <h3>Sales History</h3>
+        <div class="card-head"><h3>Sales History</h3></div>
         <table>
-          <thead><tr><th>Item</th><th>Qty</th><th>Amount</th><th>Date</th></tr></thead>
+          <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Amount</th><th>Date</th><th></th></tr></thead>
           <tbody id="salesHistoryBody"></tbody>
         </table>
-        <div id="salesHistoryEmpty" class="empty" style="display:none">No sales yet.</div>
+        <div id="salesHistoryEmpty" class="empty" style="display:none">No sales recorded yet. Record your first sale above.</div>
       </div>
     </div>
 
     <!-- INVENTORY -->
     <div class="page" id="page-inventory">
       <div class="card">
-        <h3>Inventory</h3>
+        <div class="card-head">
+          <h3>Inventory</h3>
+        </div>
+        <label for="inventorySearch">Search</label>
         <input type="text" id="inventorySearch" placeholder="Search items..." style="margin-bottom:10px;">
         <table>
-          <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Status</th></tr></thead>
+          <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Price</th><th>Status</th><th></th></tr></thead>
           <tbody id="inventoryBody"></tbody>
         </table>
-        <div id="inventoryEmpty" class="empty" style="display:none">No items yet.</div>
-        <form onsubmit="event.preventDefault(); addItem();">
+        <div id="inventoryEmpty" class="empty" style="display:none">No items yet. Add your first item below.</div>
+        <form id="itemForm">
+          <input type="hidden" id="itemEditingOriginalName" value="">
           <div class="row-3">
-            <input type="text" id="itemName" placeholder="Item name">
-            <input type="number" id="itemQty" placeholder="Quantity" min="0">
-            <input type="number" id="itemPrice" placeholder="Price (₱)" min="0" step="0.01">
+            <div><label for="itemName">Item name</label><input type="text" id="itemName" required></div>
+            <div><label for="itemQty">Quantity</label><input type="number" id="itemQty" min="0" step="1" required></div>
+            <div><label for="itemPrice">Price (₱)</label><input type="number" id="itemPrice" min="0" step="0.01" required></div>
           </div>
-          <input type="number" id="itemThreshold" placeholder="Low stock threshold (default 5)" min="0">
-          <button type="submit">Add / Update Item</button>
+          <div>
+            <label for="itemThreshold">Low stock threshold</label>
+            <input type="number" id="itemThreshold" min="0" step="1" placeholder="Default 5">
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button type="submit" id="itemFormSubmit">Add Item</button>
+            <button type="button" id="itemFormCancel" class="secondary" style="display:none;">Cancel edit</button>
+          </div>
         </form>
       </div>
     </div>
@@ -294,9 +293,9 @@
     <div class="page" id="page-data">
       <div class="card">
         <div class="cal-nav">
-          <button type="button" onclick="changeMonth(-1)">‹</button>
+          <button type="button" id="calPrev" class="secondary">‹</button>
           <span id="calMonthLabel"></span>
-          <button type="button" onclick="changeMonth(1)">›</button>
+          <button type="button" id="calNext" class="secondary">›</button>
         </div>
         <div class="calendar" id="calendarGrid"></div>
 
@@ -304,14 +303,14 @@
           <h3 id="dayDetailTitle"></h3>
           <h4>Sales</h4>
           <table>
-            <thead><tr><th>Item</th><th>Qty</th><th>Amount</th></tr></thead>
+            <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Amount</th></tr></thead>
             <tbody id="dayDetailSales"></tbody>
           </table>
           <div id="dayDetailSalesEmpty" class="empty" style="display:none">No sales recorded.</div>
 
-          <h4 style="margin-top:12px;">Inventory Changes</h4>
+          <h4>Inventory Changes</h4>
           <table>
-            <thead><tr><th>Item</th><th>Qty</th></tr></thead>
+            <thead><tr><th>Item</th><th class="num">Qty</th></tr></thead>
             <tbody id="dayDetailInventory"></tbody>
           </table>
           <div id="dayDetailInventoryEmpty" class="empty" style="display:none">No inventory changes.</div>
@@ -322,16 +321,45 @@
     <!-- SETTINGS -->
     <div class="page" id="page-settings">
       <div class="card">
-        <div class="soon">
-          <div class="icon">⚙️</div>
-          <div>Settings — coming soon.</div>
+        <h3>Data</h3>
+        <div class="settings-row">
+          <div>
+            <strong>Export data</strong>
+            <div class="desc">Download your sales, inventory, and history as a JSON backup file.</div>
+          </div>
+          <button type="button" id="exportBtn" class="secondary">Export JSON</button>
         </div>
+        <div class="settings-row">
+          <div>
+            <strong>Export sales as CSV</strong>
+            <div class="desc">Download your sales history as a spreadsheet-friendly CSV file.</div>
+          </div>
+          <button type="button" id="exportCsvBtn" class="secondary">Export CSV</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Security</h3>
+        <div class="desc" style="margin-bottom:10px;">
+          Each user's data lives at <code>stores/&#123;uid&#125;</code> in Firestore. Make sure your Firestore rules
+          restrict reads and writes to the signed-in owner only:
+        </div>
+        <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /stores/{uid} {
+      allow read, write: if request.auth != null
+                          && request.auth.uid == uid;
+    }
+  }
+}</pre>
       </div>
     </div>
 
   </div>
 </div>
 </div><!-- /appRoot -->
+
+<div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -343,6 +371,9 @@ import {
   doc, setDoc, onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* =========================================================
+   CONFIG
+   ========================================================= */
 const firebaseConfig = {
   apiKey: "AIzaSyCYFQIu1HKXakNJ8VsptEVar2m6hsJcxY4",
   authDomain: "my-store-8e7d7.firebaseapp.com",
@@ -352,80 +383,107 @@ const firebaseConfig = {
   appId: "1:237195632691:web:953ddc3ab70ed2e96e0346"
 };
 
+const KEYS = { STOCK: 'stock', SALES: 'sales', INV_HISTORY: 'invHistory' };
+const DEFAULT_THRESHOLD = 5;
+
+/* =========================================================
+   UTILITIES
+   ========================================================= */
+const Money = {
+  format(n){ return '₱' + Number(n || 0).toFixed(2); }
+};
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatShortDate(iso){
+  return new Date(iso).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+}
+
+function uid(){
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+let toastTimer;
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+/* =========================================================
+   DATA LAYER
+   ========================================================= */
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const provider = new GoogleAuthProvider();
-// Firestore with local persistent cache -> app keeps working offline,
-// queued writes sync automatically once the connection is back.
 const db = initializeFirestore(firebaseApp, {
   localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
 });
 
-const SALES_KEY = 'sales';
-const STOCK_KEY = 'stock';
-const INV_HISTORY_KEY = 'invHistory';
+const Store = (() => {
+  let data = { [KEYS.STOCK]: [], [KEYS.SALES]: [], [KEYS.INV_HISTORY]: [] };
+  let user = null;
+  let saveTimer = null;
+  let onChangeCb = () => {};
 
-let storeData = { [STOCK_KEY]: [], [SALES_KEY]: [], [INV_HISTORY_KEY]: [] };
-let currentUser = null;
-let unsubscribeSnapshot = null;
-let saveTimer = null;
+  function setUser(u){ user = u; }
 
-function load(key){ return storeData[key] || []; }
-
-function save(key, data){
-  storeData[key] = data;
-  if(!currentUser) return;
-  const syncBadge = document.getElementById('syncBadge');
-  if(syncBadge) syncBadge.textContent = navigator.onLine ? 'Syncing…' : 'Offline — will sync when back online';
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    setDoc(doc(db, 'stores', currentUser.uid), storeData, { merge:true })
-      .then(() => { if(syncBadge) syncBadge.textContent = ''; })
-      .catch(err => {
-        console.error('Save queued/failed (will retry when online):', err);
-        if(syncBadge) syncBadge.textContent = 'Offline — will sync when back online';
-      });
-  }, 250);
-}
-
-function buildDemoData(){
-  const stock = [
-    {name:'Canned Goods', qty:24, price:35, threshold:5},
-    {name:'Bar Soap', qty:3, price:15, threshold:5},
-    {name:'Instant Noodles', qty:0, price:12, threshold:5},
-    {name:'Soft Drinks 1L', qty:12, price:65, threshold:4},
-  ];
-  const today = new Date().toISOString();
-  const invHistory = stock.map(i => ({name:i.name, qty:i.qty, date:today}));
-
-  const now = new Date();
-  const sales = [];
-  for(let i=6;i>=0;i--){
-    const d = new Date(now); d.setDate(d.getDate()-i);
-    const salesCount = 2 + Math.floor(Math.random()*3);
-    for(let j=0;j<salesCount;j++){
-      const dt = new Date(d);
-      dt.setHours(8 + Math.floor(Math.random()*10), Math.floor(Math.random()*60));
-      const item = stock[Math.floor(Math.random()*stock.length)];
-      const qty = 1 + Math.floor(Math.random()*3);
-      sales.push({ item:item.name, qty, amount: Math.round(item.price*qty*100)/100, date: dt.toISOString() });
-    }
+  function replaceAll(newData){
+    data = {
+      [KEYS.STOCK]: newData[KEYS.STOCK] || [],
+      [KEYS.SALES]: newData[KEYS.SALES] || [],
+      [KEYS.INV_HISTORY]: newData[KEYS.INV_HISTORY] || []
+    };
+    onChangeCb();
   }
-  return { [STOCK_KEY]: stock, [SALES_KEY]: sales, [INV_HISTORY_KEY]: invHistory };
-}
 
-function renderAll(){
-  renderDashboard();
-  populateSaleItemDropdown();
-  renderSalesHistory();
-  renderInventory();
-  renderCalendar();
-}
+  function reset(){
+    data = { [KEYS.STOCK]: [], [KEYS.SALES]: [], [KEYS.INV_HISTORY]: [] };
+  }
 
-/* ---------- auth ---------- */
+  function get(key){ return data[key]; }
+
+  function persist(){
+    if (!user) return;
+    const badge = document.getElementById('syncBadge');
+    if (badge) badge.textContent = navigator.onLine ? 'Syncing…' : 'Offline — will sync when back online';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      setDoc(doc(db, 'stores', user.uid), data, { merge: true })
+        .then(() => { if (badge) badge.textContent = ''; })
+        .catch(err => {
+          console.error('Save failed, will retry when online:', err);
+          if (badge) badge.textContent = 'Offline — will sync when back online';
+        });
+    }, 250);
+  }
+
+  function set(key, value){
+    data[key] = value;
+    persist();
+  }
+
+  function onChange(cb){ onChangeCb = cb; }
+
+  return { setUser, replaceAll, reset, get, set, onChange };
+})();
+
+/* =========================================================
+   AUTH
+   ========================================================= */
 const authScreen = document.getElementById('authScreen');
 const appRoot = document.getElementById('appRoot');
 const authError = document.getElementById('authError');
+let unsubscribeSnapshot = null;
 
 document.getElementById('googleSignInBtn').addEventListener('click', () => {
   authError.style.display = 'none';
@@ -436,15 +494,13 @@ document.getElementById('googleSignInBtn').addEventListener('click', () => {
   });
 });
 
-document.getElementById('signOutBtn').addEventListener('click', () => {
-  signOut(auth);
-});
+document.getElementById('signOutBtn').addEventListener('click', () => signOut(auth));
 
 onAuthStateChanged(auth, (user) => {
-  if(unsubscribeSnapshot){ unsubscribeSnapshot(); unsubscribeSnapshot = null; }
+  if (unsubscribeSnapshot) { unsubscribeSnapshot(); unsubscribeSnapshot = null; }
 
-  if(user){
-    currentUser = user;
+  if (user) {
+    Store.setUser(user);
     authScreen.classList.add('hidden');
     appRoot.classList.add('visible');
     document.getElementById('userName').textContent = user.displayName || user.email;
@@ -452,293 +508,451 @@ onAuthStateChanged(auth, (user) => {
 
     const docRef = doc(db, 'stores', user.uid);
     unsubscribeSnapshot = onSnapshot(docRef, (snap) => {
-      if(snap.exists()){
-        const data = snap.data();
-        storeData = {
-          [STOCK_KEY]: data[STOCK_KEY] || [],
-          [SALES_KEY]: data[SALES_KEY] || [],
-          [INV_HISTORY_KEY]: data[INV_HISTORY_KEY] || []
-        };
+      if (snap.exists()) {
+        Store.replaceAll(snap.data());
       } else {
-        storeData = buildDemoData();
-        setDoc(docRef, storeData);
+        Store.replaceAll({ [KEYS.STOCK]: [], [KEYS.SALES]: [], [KEYS.INV_HISTORY]: [] });
+        setDoc(docRef, Store_emptyPayload());
       }
       renderAll();
-    }, (err) => {
-      console.error('Snapshot listener error:', err);
-    });
+    }, (err) => console.error('Snapshot listener error:', err));
   } else {
-    currentUser = null;
-    storeData = { [STOCK_KEY]: [], [SALES_KEY]: [], [INV_HISTORY_KEY]: [] };
+    Store.setUser(null);
+    Store.reset();
     appRoot.classList.remove('visible');
     authScreen.classList.remove('hidden');
   }
 });
 
-/* ---------- navigation ---------- */
-const titles = {
+function Store_emptyPayload(){
+  return { [KEYS.STOCK]: [], [KEYS.SALES]: [], [KEYS.INV_HISTORY]: [] };
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+const PAGE_TITLES = {
   dashboard: ['Dashboard', ''],
   sales: ['Sales', 'Record and review sales'],
   inventory: ['Inventory', 'Manage your stock'],
   data: ['Data', 'Daily sales & inventory history'],
-  settings: ['Settings', '']
+  settings: ['Settings', 'Backups and security']
 };
-document.querySelectorAll('.nav-item').forEach(item=>{
-  item.addEventListener('click', ()=>{
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+
+const renderers = {
+  dashboard: renderDashboard,
+  sales: () => { populateSaleItemDropdown(); renderSalesHistory(); },
+  inventory: renderInventory,
+  data: renderCalendar,
+  settings: () => {}
+};
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     item.classList.add('active');
     const page = item.dataset.page;
-    document.getElementById('page-'+page).classList.add('active');
-    document.getElementById('pageTitle').textContent = titles[page][0];
-    document.getElementById('pageSubtitle').textContent = titles[page][1];
-    if(page === 'dashboard') renderDashboard();
-    if(page === 'sales'){ populateSaleItemDropdown(); renderSalesHistory(); }
-    if(page === 'inventory') renderInventory();
-    if(page === 'data') renderCalendar();
+    document.getElementById('page-' + page).classList.add('active');
+    document.getElementById('pageTitle').textContent = PAGE_TITLES[page][0];
+    document.getElementById('pageSubtitle').textContent = PAGE_TITLES[page][1];
+    renderers[page]();
   });
 });
 
-/* ---------- dashboard ---------- */
+function renderAll(){
+  renderDashboard();
+  populateSaleItemDropdown();
+  renderSalesHistory();
+  renderInventory();
+  renderCalendar();
+}
+Store.onChange(renderAll);
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
 let salesChart;
 function renderDashboard(){
-  const sales = load(SALES_KEY);
-  const stock = load(STOCK_KEY);
-  const today = new Date().toDateString();
-  const todaySales = sales.filter(s => new Date(s.date).toDateString() === today);
-  document.getElementById('statSales').textContent = '₱' + todaySales.reduce((a,s)=>a+Number(s.amount),0).toFixed(2);
+  const sales = Store.get(KEYS.SALES);
+  const stock = Store.get(KEYS.STOCK);
+  const todayStr = new Date().toDateString();
+  const todaySales = sales.filter(s => new Date(s.date).toDateString() === todayStr);
+
+  document.getElementById('statSales').textContent = Money.format(todaySales.reduce((a, s) => a + Number(s.amount), 0));
   document.getElementById('statTx').textContent = todaySales.length;
   document.getElementById('statItems').textContent = stock.length;
-  document.getElementById('statLow').textContent = stock.filter(i => i.qty <= (i.threshold ?? 5)).length;
+  document.getElementById('statLow').textContent = stock.filter(i => i.qty <= (i.threshold ?? DEFAULT_THRESHOLD)).length;
 
   const days = [], totals = [];
-  for(let i=6;i>=0;i--){
-    const d = new Date(); d.setDate(d.getDate()-i);
-    days.push(d.toLocaleDateString('en-US',{weekday:'short'}));
-    totals.push(sales.filter(s=>new Date(s.date).toDateString()===d.toDateString())
-                      .reduce((a,s)=>a+Number(s.amount),0));
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    days.push(d.toLocaleDateString('en-US', { weekday: 'short' }));
+    totals.push(sales.filter(s => new Date(s.date).toDateString() === d.toDateString())
+                      .reduce((a, s) => a + Number(s.amount), 0));
   }
   const maxVal = Math.max(...totals);
   const colors = totals.map(v => v === maxVal && maxVal > 0 ? '#16A34A' : '#2563EB');
 
   const ctx = document.getElementById('salesChart').getContext('2d');
-  if(salesChart) salesChart.destroy();
+  if (salesChart) salesChart.destroy();
   salesChart = new Chart(ctx, {
-    type:'bar',
-    data:{ labels:days, datasets:[{ data:totals, backgroundColor:colors, borderRadius:4 }] },
-    options:{ plugins:{legend:{display:false}}, scales:{ y:{ ticks:{ callback:v=>'₱'+v } } } }
+    type: 'bar',
+    data: { labels: days, datasets: [{ data: totals, backgroundColor: colors, borderRadius: 4 }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '₱' + v } } } }
   });
 }
 
-/* ---------- sales page ---------- */
+/* =========================================================
+   SALES
+   ========================================================= */
 function populateSaleItemDropdown(){
-  const stock = load(STOCK_KEY);
+  const stock = Store.get(KEYS.STOCK);
   const select = document.getElementById('saleItemSelect');
   const current = select.value;
   select.innerHTML = '<option value="">Select item</option>' +
-    stock.map(i => `<option value="${i.name}">${i.name} (${i.qty} in stock)</option>`).join('');
-  if(stock.some(i=>i.name===current)) select.value = current;
+    stock.map(i => `<option value="${escapeHtml(i.name)}">${escapeHtml(i.name)} (${i.qty} in stock)</option>`).join('');
+  if (stock.some(i => i.name === current)) select.value = current;
   updateSalePreview();
 }
 
 function updateSalePreview(){
-  const stock = load(STOCK_KEY);
+  const stock = Store.get(KEYS.STOCK);
   const name = document.getElementById('saleItemSelect').value;
-  const qty = parseInt(document.getElementById('saleQty').value) || 0;
+  const qty = parseInt(document.getElementById('saleQty').value, 10) || 0;
   const preview = document.getElementById('salePreview');
   const item = stock.find(i => i.name === name);
 
-  if(!item){ preview.innerHTML = 'Select an item to see price.'; return; }
+  if (!item) { preview.textContent = 'Select an item to see price.'; return; }
   const price = item.price || 0;
   const total = price * qty;
-  preview.innerHTML = `Price: <b>₱${price.toFixed(2)}</b> each &nbsp;|&nbsp; Total: <b>₱${total.toFixed(2)}</b> &nbsp;|&nbsp; In stock: <b>${item.qty}</b>`;
+  preview.innerHTML = `Price: <b>${Money.format(price)}</b> each &nbsp;|&nbsp; Total: <b>${Money.format(total)}</b> &nbsp;|&nbsp; In stock: <b>${item.qty}</b>`;
 }
+document.getElementById('saleItemSelect').addEventListener('change', updateSalePreview);
+document.getElementById('saleQty').addEventListener('input', updateSalePreview);
 
-function addSale(){
+document.getElementById('saleForm').addEventListener('submit', (e) => {
+  e.preventDefault();
   const name = document.getElementById('saleItemSelect').value;
-  const qty = parseInt(document.getElementById('saleQty').value);
-  if(!name || !qty || qty <= 0) return;
+  const qty = parseInt(document.getElementById('saleQty').value, 10);
+  if (!name || !qty || qty <= 0) { showToast('Choose an item and a valid quantity.'); return; }
 
-  const stock = load(STOCK_KEY);
+  const stock = Store.get(KEYS.STOCK);
   const item = stock.find(i => i.name === name);
-  if(!item) return;
-  if(qty > item.qty){ alert(`Only ${item.qty} of "${name}" in stock.`); return; }
+  if (!item) return;
+  if (qty > item.qty) { showToast(`Only ${item.qty} of "${name}" in stock.`); return; }
 
   const price = item.price || 0;
   const amount = Math.round(price * qty * 100) / 100;
+  const now = new Date().toISOString();
 
-  const sales = load(SALES_KEY);
-  sales.push({ item:name, qty, amount, date:new Date().toISOString() });
-  save(SALES_KEY, sales);
+  const sales = Store.get(KEYS.SALES);
+  sales.push({ id: uid(), item: name, qty, amount, date: now });
+  Store.set(KEYS.SALES, sales);
 
   item.qty -= qty;
-  save(STOCK_KEY, stock);
+  Store.set(KEYS.STOCK, stock);
 
-  const invHistory = load(INV_HISTORY_KEY);
-  invHistory.push({ name, qty:item.qty, date:new Date().toISOString() });
-  save(INV_HISTORY_KEY, invHistory);
+  const invHistory = Store.get(KEYS.INV_HISTORY);
+  invHistory.push({ id: uid(), name, qty: item.qty, date: now });
+  Store.set(KEYS.INV_HISTORY, invHistory);
 
   document.getElementById('saleQty').value = '';
   populateSaleItemDropdown();
   renderSalesHistory();
-}
+  renderDashboard();
+  showToast('Sale recorded.');
+});
 
 function renderSalesHistory(){
-  const sales = load(SALES_KEY);
+  const sales = Store.get(KEYS.SALES);
   const body = document.getElementById('salesHistoryBody');
   const emptyMsg = document.getElementById('salesHistoryEmpty');
-  if(sales.length === 0){ body.innerHTML=''; emptyMsg.style.display='block'; return; }
+  if (sales.length === 0) { body.innerHTML = ''; emptyMsg.style.display = 'block'; return; }
   emptyMsg.style.display = 'none';
-  const sorted = [...sales].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 20);
-  body.innerHTML = sorted.map(s => {
-    const d = new Date(s.date).toLocaleDateString('en-US',{month:'short', day:'numeric'});
-    return `<tr><td>${s.item}</td><td>${s.qty ?? 1}</td><td>₱${Number(s.amount).toFixed(2)}</td><td>${d}</td></tr>`;
-  }).join('');
+
+  const sorted = [...sales].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 30);
+  body.innerHTML = sorted.map(s => `
+    <tr>
+      <td>${escapeHtml(s.item)}</td>
+      <td class="num">${s.qty ?? 1}</td>
+      <td class="num">${Money.format(s.amount)}</td>
+      <td>${formatShortDate(s.date)}</td>
+      <td><button type="button" class="danger" data-delete-sale="${escapeHtml(s.id)}">Undo</button></td>
+    </tr>`).join('');
 }
 
-/* ---------- inventory page ---------- */
+document.getElementById('salesHistoryBody').addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-delete-sale]');
+  if (!btn) return;
+  const saleId = btn.dataset.deleteSale;
+  const sales = Store.get(KEYS.SALES);
+  const sale = sales.find(s => s.id === saleId);
+  if (!sale) return;
+  if (!confirm(`Undo sale of ${sale.qty ?? 1} × "${sale.item}"? This restores the stock.`)) return;
+
+  Store.set(KEYS.SALES, sales.filter(s => s.id !== saleId));
+
+  const stock = Store.get(KEYS.STOCK);
+  const item = stock.find(i => i.name === sale.item);
+  if (item) {
+    item.qty += (sale.qty ?? 1);
+    Store.set(KEYS.STOCK, stock);
+    const invHistory = Store.get(KEYS.INV_HISTORY);
+    invHistory.push({ id: uid(), name: item.name, qty: item.qty, date: new Date().toISOString() });
+    Store.set(KEYS.INV_HISTORY, invHistory);
+  }
+  renderSalesHistory();
+  renderDashboard();
+  populateSaleItemDropdown();
+  showToast('Sale undone.');
+});
+
+/* =========================================================
+   INVENTORY
+   ========================================================= */
+function statusFor(item){
+  const threshold = item.threshold ?? DEFAULT_THRESHOLD;
+  if (item.qty <= 0) return { cls: 'out', label: 'Out of stock' };
+  if (item.qty <= threshold) return { cls: 'low', label: 'Low' };
+  return { cls: 'ok', label: 'In stock' };
+}
+
 function renderInventory(){
-  const stock = load(STOCK_KEY);
+  const stock = Store.get(KEYS.STOCK);
   const body = document.getElementById('inventoryBody');
   const emptyMsg = document.getElementById('inventoryEmpty');
   const query = (document.getElementById('inventorySearch').value || '').trim().toLowerCase();
   const filtered = query ? stock.filter(i => i.name.toLowerCase().includes(query)) : stock;
 
-  if(filtered.length === 0){
+  if (filtered.length === 0) {
     body.innerHTML = '';
-    emptyMsg.textContent = query ? 'No items match your search.' : 'No items yet.';
+    emptyMsg.textContent = query ? 'No items match your search.' : 'No items yet. Add your first item below.';
     emptyMsg.style.display = 'block';
   } else {
     emptyMsg.style.display = 'none';
-    body.innerHTML = filtered.map(item=>{
-      const threshold = item.threshold ?? 5;
-      const state = item.qty <= 0 ? 'out' : (item.qty <= threshold ? 'low' : 'ok');
-      const badge = state === 'out'
-        ? '<span class="badge badge-out">Out of stock</span>'
-        : state === 'low'
-        ? '<span class="badge badge-low">Low</span>'
-        : '<span class="badge badge-ok">In stock</span>';
-      return `<tr><td>${item.name}</td><td>${item.qty}</td><td>₱${Number(item.price || 0).toFixed(2)}</td><td>${badge}</td></tr>`;
+    body.innerHTML = filtered.map(item => {
+      const s = statusFor(item);
+      return `
+        <tr>
+          <td>${escapeHtml(item.name)}</td>
+          <td class="num">${item.qty}</td>
+          <td class="num">${Money.format(item.price)}</td>
+          <td><span class="badge badge-${s.cls}">${s.label}</span></td>
+          <td>
+            <div class="icon-btn-group">
+              <button type="button" class="secondary small" data-edit-item="${escapeHtml(item.name)}">Edit</button>
+              <button type="button" class="danger" data-delete-item="${escapeHtml(item.name)}">Delete</button>
+            </div>
+          </td>
+        </tr>`;
     }).join('');
   }
 }
+
 document.getElementById('inventorySearch').addEventListener('input', renderInventory);
 
-function addItem(){
+const itemForm = document.getElementById('itemForm');
+const itemFormSubmit = document.getElementById('itemFormSubmit');
+const itemFormCancel = document.getElementById('itemFormCancel');
+const itemEditingOriginalName = document.getElementById('itemEditingOriginalName');
+
+itemForm.addEventListener('submit', (e) => {
+  e.preventDefault();
   const name = document.getElementById('itemName').value.trim();
-  const qty = parseInt(document.getElementById('itemQty').value);
-  const priceVal = document.getElementById('itemPrice').value;
+  const qty = parseInt(document.getElementById('itemQty').value, 10);
+  const price = parseFloat(document.getElementById('itemPrice').value) || 0;
   const thresholdVal = document.getElementById('itemThreshold').value;
-  if(!name || isNaN(qty)) return;
-  const price = priceVal ? parseFloat(priceVal) : 0;
-  const threshold = thresholdVal ? parseInt(thresholdVal) : 5;
+  const threshold = thresholdVal ? parseInt(thresholdVal, 10) : DEFAULT_THRESHOLD;
+  if (!name || isNaN(qty) || qty < 0) { showToast('Enter a valid name and quantity.'); return; }
 
-  const stock = load(STOCK_KEY);
-  const existing = stock.find(i => i.name.toLowerCase() === name.toLowerCase());
-  if(existing){ existing.qty = qty; existing.price = price; existing.threshold = threshold; }
-  else { stock.push({name, qty, price, threshold}); }
-  save(STOCK_KEY, stock);
+  const stock = Store.get(KEYS.STOCK);
+  const editingName = itemEditingOriginalName.value;
 
-  const invHistory = load(INV_HISTORY_KEY);
-  invHistory.push({name, qty, date:new Date().toISOString()});
-  save(INV_HISTORY_KEY, invHistory);
+  if (editingName) {
+    const existing = stock.find(i => i.name === editingName);
+    const dupe = stock.find(i => i.name.toLowerCase() === name.toLowerCase() && i !== existing);
+    if (dupe) { showToast(`"${name}" already exists.`); return; }
+    if (existing) { existing.name = name; existing.qty = qty; existing.price = price; existing.threshold = threshold; }
+  } else {
+    const existing = stock.find(i => i.name.toLowerCase() === name.toLowerCase());
+    if (existing) { existing.qty = qty; existing.price = price; existing.threshold = threshold; }
+    else { stock.push({ name, qty, price, threshold }); }
+  }
+  Store.set(KEYS.STOCK, stock);
 
-  document.getElementById('itemName').value = '';
-  document.getElementById('itemQty').value = '';
-  document.getElementById('itemPrice').value = '';
-  document.getElementById('itemThreshold').value = '';
+  const invHistory = Store.get(KEYS.INV_HISTORY);
+  invHistory.push({ id: uid(), name, qty, date: new Date().toISOString() });
+  Store.set(KEYS.INV_HISTORY, invHistory);
+
+  exitEditMode();
   renderInventory();
   renderCalendar();
+  showToast(editingName ? 'Item updated.' : 'Item added.');
+});
+
+function enterEditMode(name){
+  const stock = Store.get(KEYS.STOCK);
+  const item = stock.find(i => i.name === name);
+  if (!item) return;
+  itemEditingOriginalName.value = item.name;
+  document.getElementById('itemName').value = item.name;
+  document.getElementById('itemQty').value = item.qty;
+  document.getElementById('itemPrice').value = item.price;
+  document.getElementById('itemThreshold').value = item.threshold ?? '';
+  itemFormSubmit.textContent = 'Save Changes';
+  itemFormCancel.style.display = 'inline-block';
+  document.getElementById('itemName').focus();
 }
 
-/* ---------- Data page: monthly calendar ---------- */
+function exitEditMode(){
+  itemForm.reset();
+  itemEditingOriginalName.value = '';
+  itemFormSubmit.textContent = 'Add Item';
+  itemFormCancel.style.display = 'none';
+}
+
+itemFormCancel.addEventListener('click', exitEditMode);
+
+document.getElementById('inventoryBody').addEventListener('click', (e) => {
+  const editBtn = e.target.closest('[data-edit-item]');
+  if (editBtn) { enterEditMode(editBtn.dataset.editItem); return; }
+
+  const delBtn = e.target.closest('[data-delete-item]');
+  if (delBtn) {
+    const name = delBtn.dataset.deleteItem;
+    if (!confirm(`Delete "${name}" from inventory? Past sales records will be kept.`)) return;
+    Store.set(KEYS.STOCK, Store.get(KEYS.STOCK).filter(i => i.name !== name));
+    if (itemEditingOriginalName.value === name) exitEditMode();
+    renderInventory();
+    populateSaleItemDropdown();
+    showToast('Item deleted.');
+  }
+});
+
+/* =========================================================
+   DATA / CALENDAR
+   ========================================================= */
 let calMonth = new Date().getMonth();
 let calYear = new Date().getFullYear();
 let selectedDate = null;
 
+document.getElementById('calPrev').addEventListener('click', () => changeMonth(-1));
+document.getElementById('calNext').addEventListener('click', () => changeMonth(1));
+
 function changeMonth(delta){
   calMonth += delta;
-  if(calMonth < 0){ calMonth = 11; calYear--; }
-  if(calMonth > 11){ calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0; calYear++; }
   selectedDate = null;
   document.getElementById('dayDetail').style.display = 'none';
   renderCalendar();
 }
 
 function renderCalendar(){
-  const sales = load(SALES_KEY);
-  const invHistory = load(INV_HISTORY_KEY);
+  const sales = Store.get(KEYS.SALES);
+  const invHistory = Store.get(KEYS.INV_HISTORY);
   const grid = document.getElementById('calendarGrid');
   document.getElementById('calMonthLabel').textContent =
-    new Date(calYear, calMonth).toLocaleDateString('en-US', { month:'long', year:'numeric' });
+    new Date(calYear, calMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-  const dow = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const dow = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   let html = dow.map(d => `<div class="cal-dow">${d}</div>`).join('');
 
   const firstDay = new Date(calYear, calMonth, 1).getDay();
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
   const todayStr = new Date().toDateString();
 
-  for(let i = 0; i < firstDay; i++){ html += `<div class="cal-day empty-cell"></div>`; }
+  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty-cell"></div>`;
 
-  for(let day = 1; day <= daysInMonth; day++){
+  for (let day = 1; day <= daysInMonth; day++) {
     const d = new Date(calYear, calMonth, day);
     const dStr = d.toDateString();
     const hasSales = sales.some(s => new Date(s.date).toDateString() === dStr);
     const hasInv = invHistory.some(h => new Date(h.date).toDateString() === dStr);
 
     let cls = 'cal-day';
-    if(dStr === todayStr) cls += ' today';
-    if(selectedDate === dStr) cls += ' selected';
+    if (dStr === todayStr) cls += ' today';
+    if (selectedDate === dStr) cls += ' selected';
 
     let dots = '';
-    if(hasSales) dots += '<span class="cal-dot dot-sales"></span>';
-    if(hasInv) dots += '<span class="cal-dot dot-inv"></span>';
+    if (hasSales) dots += '<span class="cal-dot dot-sales"></span>';
+    if (hasInv) dots += '<span class="cal-dot dot-inv"></span>';
 
-    html += `<div class="${cls}" onclick="selectDay('${dStr}')">
+    html += `<button type="button" class="${cls}" data-day="${dStr}">
       <span>${day}</span>
       <div class="cal-dots">${dots}</div>
-    </div>`;
+    </button>`;
   }
   grid.innerHTML = html;
 }
+
+document.getElementById('calendarGrid').addEventListener('click', (e) => {
+  const cell = e.target.closest('[data-day]');
+  if (cell) selectDay(cell.dataset.day);
+});
 
 function selectDay(dStr){
   selectedDate = dStr;
   renderCalendar();
 
-  const sales = load(SALES_KEY).filter(s => new Date(s.date).toDateString() === dStr);
-  const invHistory = load(INV_HISTORY_KEY).filter(h => new Date(h.date).toDateString() === dStr);
+  const sales = Store.get(KEYS.SALES).filter(s => new Date(s.date).toDateString() === dStr);
+  const invHistory = Store.get(KEYS.INV_HISTORY).filter(h => new Date(h.date).toDateString() === dStr);
 
   document.getElementById('dayDetail').style.display = 'block';
   document.getElementById('dayDetailTitle').textContent =
-    new Date(dStr).toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+    new Date(dStr).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
   const salesBody = document.getElementById('dayDetailSales');
   const salesEmpty = document.getElementById('dayDetailSalesEmpty');
-  if(sales.length === 0){ salesBody.innerHTML=''; salesEmpty.style.display='block'; }
-  else{
+  if (sales.length === 0) { salesBody.innerHTML = ''; salesEmpty.style.display = 'block'; }
+  else {
     salesEmpty.style.display = 'none';
-    salesBody.innerHTML = sales.map(s => `<tr><td>${s.item}</td><td>${s.qty ?? 1}</td><td>₱${Number(s.amount).toFixed(2)}</td></tr>`).join('');
+    salesBody.innerHTML = sales.map(s => `<tr><td>${escapeHtml(s.item)}</td><td class="num">${s.qty ?? 1}</td><td class="num">${Money.format(s.amount)}</td></tr>`).join('');
   }
 
   const invBody = document.getElementById('dayDetailInventory');
   const invEmpty = document.getElementById('dayDetailInventoryEmpty');
-  if(invHistory.length === 0){ invBody.innerHTML=''; invEmpty.style.display='block'; }
-  else{
+  if (invHistory.length === 0) { invBody.innerHTML = ''; invEmpty.style.display = 'block'; }
+  else {
     invEmpty.style.display = 'none';
-    invBody.innerHTML = invHistory.map(h => `<tr><td>${h.name}</td><td>${h.qty}</td></tr>`).join('');
+    invBody.innerHTML = invHistory.map(h => `<tr><td>${escapeHtml(h.name)}</td><td class="num">${h.qty}</td></tr>`).join('');
   }
 }
 
-/* ---------- expose functions used by inline onclick/onchange/onsubmit ---------- */
-/* Module scripts don't leak top-level declarations onto window, so these
-   need to be attached explicitly for the inline HTML handlers to find them. */
-window.addSale = addSale;
-window.addItem = addItem;
-window.changeMonth = changeMonth;
-window.selectDay = selectDay;
-window.updateSalePreview = updateSalePreview;
+/* =========================================================
+   SETTINGS / EXPORT
+   ========================================================= */
+function downloadFile(filename, content, mime){
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const payload = {
+    [KEYS.STOCK]: Store.get(KEYS.STOCK),
+    [KEYS.SALES]: Store.get(KEYS.SALES),
+    [KEYS.INV_HISTORY]: Store.get(KEYS.INV_HISTORY),
+    exportedAt: new Date().toISOString()
+  };
+  downloadFile(`my-store-backup-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(payload, null, 2), 'application/json');
+  showToast('Backup downloaded.');
+});
+
+document.getElementById('exportCsvBtn').addEventListener('click', () => {
+  const sales = Store.get(KEYS.SALES);
+  const rows = [['Item', 'Qty', 'Amount', 'Date']];
+  [...sales].sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(s => {
+    rows.push([s.item, s.qty ?? 1, Number(s.amount).toFixed(2), s.date]);
+  });
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+  downloadFile(`my-store-sales-${new Date().toISOString().slice(0, 10)}.csv`, csv, 'text/csv');
+  showToast('CSV downloaded.');
+});
 </script>
 </body>
 </html>
